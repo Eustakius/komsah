@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    /* Pure White */
+    --foreground: 144 100% 10%;
+    /* Dark Green Text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 144 100% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 144 100% 10%;
+
+    --primary: 142 76% 36%;
+    /* Solid Agri Green */
+    --primary-foreground: 355.7 100% 97.3%;
+
+    --secondary: 145 20% 96%;
+    /* Very Light Green tint */
+    --secondary-foreground: 144 100% 10%;
+
+    --muted: 145 20% 96%;
+    --muted-foreground: 145 10% 40%;
+
+    --accent: 38 92% 50%;
+    /* Golden Harvest Orange */
+    --accent-foreground: 144 100% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 145 20% 90%;
+    --input: 145 20% 90%;
+    --ring: 142 76% 36%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* User requested standard comfy reading (Agri Aja), so avoiding forced dark mode */
+    --background: 0 0% 100%;
+    --foreground: 144 100% 10%;
+    /* ... keep light for consistency unless toggled, but default is light-agri */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+    /* Clean modern font */
+  }
+}
