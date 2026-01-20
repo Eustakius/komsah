@@ -1,61 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    /* Pure White */
-    --foreground: 144 100% 10%;
-    /* Dark Green Text */
+    /* KOMSAH Philosophy Colors - "Tanah Sehat, Kunci Petani Sejahtera" */
 
-    --card: 0 0% 100%;
-    --card-foreground: 144 100% 10%;
+    /* Soil Health Spectrum */
+    --soil-dark: #3e2723;
+    /* Unhealthy soil */
+    --soil-rich: #5d4037;
+    /* Healthy soil */
+    --soil-vibrant: #6d4c41;
+    /* Very healthy soil */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 144 100% 10%;
+    /* Plant Life */
+    --leaf-green: #558b2f;
+    /* Fresh leaves */
+    --leaf-brown: #6d4c41;
+    /* Decomposing leaves (seresah) */
+    --microbe-glow: #aed581;
+    /* Active microbes */
+    --plant-dark: #2d5016;
+    /* Plant stems */
 
-    --primary: 142 76% 36%;
-    /* Solid Agri Green */
-    --primary-foreground: 355.7 100% 97.3%;
+    /* Natural Elements */
+    --sun-warm: #ffb74d;
+    /* Warm sunlight */
+    --sky-clear: #81d4fa;
+    /* Clear sky */
+    --earth-deep: #4e342e;
+    /* Deep earth */
 
-    --secondary: 145 20% 96%;
-    /* Very Light Green tint */
-    --secondary-foreground: 144 100% 10%;
-
-    --muted: 145 20% 96%;
-    --muted-foreground: 145 10% 40%;
-
-    --accent: 38 92% 50%;
-    /* Golden Harvest Orange */
-    --accent-foreground: 144 100% 10%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 145 20% 90%;
-    --input: 145 20% 90%;
-    --ring: 142 76% 36%;
-
+    /* UI Colors */
+    --background: #ffffff;
+    --foreground: #1f2937;
+    --primary: #558b2f;
+    /* Leaf green */
+    --primary-dark: #2d5016;
+    --secondary: #ffb74d;
+    /* Sun warm */
+    --accent: #aed581;
+    /* Microbe glow */
+    --muted: #f3f4f6;
+    --border: #e5e7eb;
     --radius: 0.5rem;
   }
 
-  .dark {
-    /* User requested standard comfy reading (Agri Aja), so avoiding forced dark mode */
-    --background: 0 0% 100%;
-    --foreground: 144 100% 10%;
-    /* ... keep light for consistency unless toggled, but default is light-agri */
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', sans-serif;
-    /* Clean modern font */
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #558b2f;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2d5016;
+  }
+}
+
+@layer utilities {
+
+  /* Custom animations */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-glow {
+
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(174, 213, 129, 0.5);
+    }
+
+    50% {
+      box-shadow: 0 0 40px rgba(174, 213, 129, 0.8);
+    }
+  }
+
+  @keyframes soil-health {
+    0% {
+      background-color: #3e2723;
+    }
+
+    50% {
+      background-color: #5d4037;
+    }
+
+    100% {
+      background-color: #aed581;
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-soil-health {
+    animation: soil-health 5s ease-in-out infinite;
+  }
+
+  /* Gradient utilities */
+  .bg-soil-gradient {
+    background: linear-gradient(135deg, #3e2723 0%, #5d4037 50%, #aed581 100%);
+  }
+
+  .bg-nature-gradient {
+    background: linear-gradient(135deg, #558b2f 0%, #81d4fa 50%, #ffb74d 100%);
+  }
+
+  .text-gradient-soil {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-soil-dark via-soil-rich to-microbe-glow;
   }
 }

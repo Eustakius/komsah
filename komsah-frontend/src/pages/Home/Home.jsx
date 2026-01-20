@@ -1,11 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { ArrowRight, Sprout, TrendingUp, ShieldCheck, ShoppingBag, Instagram, Leaf, Droplet, Sun, Users } from 'lucide-react';
+import { ScrollControls } from '@react-three/drei';
+import { ArrowRight, Sprout, TrendingUp, ShieldCheck, ShoppingBag, Instagram, Leaf, Droplet, Sun, Users, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import AgriScene3D from '@/components/3d/AgriScene3D';
+import ArcanePostProcessing from '@/components/3d/effects/ArcanePostProcessing';
 
 // Animated Counter Component
 function AnimatedCounter({ end, duration = 2, suffix = "" }) {
@@ -38,10 +39,10 @@ function FeatureCard({ icon: Icon, title, description, color, delay }) {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay }}
             whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            className={`p-8 bg-white rounded-2xl border border-gray-100 hover:border-${color}-200 hover:shadow-2xl hover:shadow-${color}-100/50 transition-all group relative overflow-hidden`}
+            className={`p-8 bg-white rounded-2xl border-2 border-gray-100 hover:border-${color}-200 hover:shadow-2xl hover:shadow-${color}-100/50 transition-all group relative overflow-hidden`}
         >
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-transparent to-gray-50 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500"></div>
-            <div className={`w-16 h-16 bg-${color}-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-${color}-600 group-hover:rotate-12 transition-all duration-300 relative z-10`}>
+            <div className={`w-16 h-16 bg-${color}-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-${color}-600 group-hover:rotate-12 transition-all duration-300 relative z-10 shadow-lg`}>
                 <Icon className={`w-8 h-8 text-${color}-600 group-hover:text-white transition-colors`} />
             </div>
             <h3 className="text-2xl font-bold mb-4 text-gray-900 relative z-10">{title}</h3>
@@ -56,19 +57,27 @@ export default function Home() {
 
     return (
         <div className="flex flex-col min-h-screen bg-gradient-to-b from-white via-green-50/30 to-white">
-            {/* 3D Hero Section */}
+            {/* 3D Hero Section with Advanced Scene */}
             <section className="relative h-screen flex items-center overflow-hidden">
-                {/* 3D Background */}
+                {/* Advanced 3D Background */}
                 <div className="absolute inset-0 z-0">
-                    <Canvas camera={{ position: [0, 0, 5], fov: 50 }} className="bg-gradient-to-b from-sky-100 to-green-50">
+                    <Canvas
+                        camera={{ position: [0, 2, 8], fov: 50 }}
+                        className="bg-gradient-to-b from-sky-100 via-green-50 to-amber-50"
+                        shadows
+                        dpr={[1, 2]}
+                    >
                         <Suspense fallback={null}>
-                            <AgriScene3D />
+                            <ScrollControls pages={3} damping={0.1}>
+                                <AgriScene3D />
+                            </ScrollControls>
+                            <ArcanePostProcessing enableBloom={true} />
                         </Suspense>
                     </Canvas>
                 </div>
 
-                {/* Overlay Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/70 to-transparent z-10"></div>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-transparent z-10"></div>
 
                 {/* Hero Content */}
                 <div className="container mx-auto px-4 relative z-20">
@@ -82,10 +91,10 @@ export default function Home() {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold tracking-wide shadow-lg"
+                            className="inline-flex items-center gap-2 mb-6 px-5 py-2.5 rounded-full bg-gradient-to-r from-green-100 to-green-50 text-green-800 text-sm font-semibold tracking-wide shadow-lg border-2 border-green-200"
                         >
                             <Leaf className="w-4 h-4" />
-                            Teknologi Pertanian Masa Depan
+                            Tanah Sehat, Kunci Petani Sejahtera
                         </motion.div>
 
                         <motion.h1
@@ -94,8 +103,10 @@ export default function Home() {
                             transition={{ delay: 0.4 }}
                             className="text-6xl md:text-7xl font-extrabold text-gray-900 mb-6 leading-tight"
                         >
-                            Panen Berlimpah,<br />
-                            <span className="text-green-700">Tanah Sehat</span>
+                            Pupuk Organik<br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-green-600 to-green-500">
+                                Berbasis Seresah
+                            </span>
                         </motion.h1>
 
                         <motion.p
@@ -104,7 +115,9 @@ export default function Home() {
                             transition={{ delay: 0.6 }}
                             className="text-xl text-gray-700 mb-10 leading-relaxed"
                         >
-                            Pupuk organik KOMSAH dengan teknologi nano. Terbukti meningkatkan produktivitas hingga <strong className="text-green-700">40%</strong> secara alami dan berkelanjutan.
+                            Dikembangkan oleh <strong>Prof. Dr. Ir. Widyatmoko (BRIN)</strong>.
+                            Mengembalikan kesehatan tanah yang rusak akibat pupuk kimia berlebihan,
+                            meningkatkan hasil panen hingga <strong className="text-green-700">40%</strong>.
                         </motion.p>
 
                         <motion.div
@@ -114,14 +127,14 @@ export default function Home() {
                             className="flex flex-col sm:flex-row gap-4"
                         >
                             <Link to="/products">
-                                <Button size="lg" className="w-full sm:w-auto text-lg px-10 py-7 h-auto bg-green-700 hover:bg-green-800 shadow-2xl shadow-green-200 hover:shadow-green-300 transition-all duration-300 hover:scale-105">
+                                <Button size="lg" className="w-full sm:w-auto text-lg px-10 py-7 h-auto bg-gradient-to-r from-green-700 to-green-600 hover:from-green-800 hover:to-green-700 shadow-2xl shadow-green-300 hover:shadow-green-400 transition-all duration-300 hover:scale-105">
                                     <ShoppingBag className="mr-2 w-5 h-5" />
                                     Belanja Sekarang
                                     <ArrowRight className="ml-2 w-5 h-5" />
                                 </Button>
                             </Link>
                             <Link to="/calculator">
-                                <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg px-10 py-7 h-auto border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-green-600 transition-all duration-300">
+                                <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg px-10 py-7 h-auto border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-green-600 transition-all duration-300 shadow-lg">
                                     <Droplet className="mr-2 w-5 h-5" />
                                     Hitung Dosis Pupuk
                                 </Button>
@@ -135,16 +148,19 @@ export default function Home() {
                             transition={{ delay: 1 }}
                             className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row items-start sm:items-center gap-4"
                         >
-                            <p className="text-sm text-gray-500 font-medium uppercase tracking-wider">Toko Resmi:</p>
+                            <p className="text-sm text-gray-500 font-medium uppercase tracking-wider flex items-center gap-2">
+                                <Heart className="w-4 h-4 text-red-500" />
+                                Toko Resmi:
+                            </p>
                             <div className="flex gap-3">
                                 <a href="https://shopee.co.id/komsahshop" target="_blank" rel="noreferrer" className="group">
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white border border-orange-200 rounded-lg transition-all duration-300 shadow-md hover:shadow-xl">
+                                    <div className="flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white border-2 border-orange-200 rounded-lg transition-all duration-300 shadow-md hover:shadow-xl">
                                         <ShoppingBag className="w-4 h-4" />
                                         <span className="font-semibold text-sm">Shopee</span>
                                     </div>
                                 </a>
                                 <a href="https://www.instagram.com/explore/tags/komsah/" target="_blank" rel="noreferrer" className="group">
-                                    <div className="flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-600 hover:bg-pink-600 hover:text-white border border-pink-200 rounded-lg transition-all duration-300 shadow-md hover:shadow-xl">
+                                    <div className="flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-600 hover:bg-pink-600 hover:text-white border-2 border-pink-200 rounded-lg transition-all duration-300 shadow-md hover:shadow-xl">
                                         <Instagram className="w-4 h-4" />
                                         <span className="font-semibold text-sm">Instagram</span>
                                     </div>
@@ -167,7 +183,7 @@ export default function Home() {
             </section>
 
             {/* Statistics Section */}
-            <section className="py-20 bg-green-700 text-white relative overflow-hidden">
+            <section className="py-20 bg-gradient-to-r from-green-700 via-green-600 to-green-700 text-white relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
                     <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -ml-32 -mt-32"></div>
                     <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full -mr-48 -mb-48"></div>
@@ -175,10 +191,10 @@ export default function Home() {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="grid md:grid-cols-4 gap-8 text-center">
                         {[
-                            { icon: Users, value: 5000, suffix: "+", label: "Petani Terpercaya" },
-                            { icon: Sprout, value: 40, suffix: "%", label: "Peningkatan Hasil" },
-                            { icon: Sun, value: 100, suffix: "%", label: "Organik Murni" },
-                            { icon: TrendingUp, value: 98, suffix: "%", label: "Kepuasan Pelanggan" }
+                            { icon: Users, value: 5000, suffix: "+", label: "Petani Sejahtera" },
+                            { icon: TrendingUp, value: 40, suffix: "%", label: "Peningkatan Hasil" },
+                            { icon: Leaf, value: 100, suffix: "%", label: "Organik Murni" },
+                            { icon: Heart, value: 98, suffix: "%", label: "Kepuasan Pelanggan" }
                         ].map((stat, i) => (
                             <motion.div
                                 key={i}
@@ -209,28 +225,28 @@ export default function Home() {
                         className="text-center mb-16"
                     >
                         <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Kenapa Memilih KOMSAH?</h2>
-                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">Keunggulan teknologi kami untuk pertanian masa depan yang berkelanjutan.</p>
+                        <p className="text-xl text-gray-600 max-w-2xl mx-auto">Solusi ilmiah untuk tanah sehat dan petani sejahtera.</p>
                     </motion.div>
 
                     <div className="grid md:grid-cols-3 gap-8">
                         <FeatureCard
-                            icon={Sprout}
-                            title="100% Organik Murni"
-                            description="Bebas bahan kimia berbahaya. Aman untuk tanah jangka panjang dan ramah lingkungan untuk generasi mendatang."
+                            icon={Leaf}
+                            title="Berbasis Seresah Alami"
+                            description="Dibuat dari daun gugur (seresah) yang kaya mikroba, enzim, dan hormon alami. Proses ilmiah yang terbukti mengembalikan kesuburan tanah."
                             color="green"
                             delay={0}
                         />
                         <FeatureCard
                             icon={TrendingUp}
-                            title="Hasil Panen Meningkat"
-                            description="Formulasi nutrisi mikro lengkap yang terbukti meningkatkan berat dan kualitas panen hingga 40%."
+                            title="Hasil Panen Meningkat 40%"
+                            description="Riset BRIN membuktikan peningkatan signifikan pada berat dan kualitas panen. Mengurangi ketergantungan pada pupuk kimia."
                             color="blue"
                             delay={0.1}
                         />
                         <FeatureCard
                             icon={ShieldCheck}
-                            title="Teruji & Terpercaya"
-                            description="Telah digunakan oleh ribuan petani di seluruh Indonesia dengan tingkat kepuasan 98% dan hasil nyata."
+                            title="Didukung Puskestan"
+                            description="Pusat Kesehatan Tanah dan Tanaman memberikan pendampingan lengkap dari tanam hingga panen. Skema pembayaran fleksibel (yarnen)."
                             color="orange"
                             delay={0.2}
                         />
@@ -254,7 +270,7 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-bold mb-6"
                     >
-                        Siap Tingkatkan Hasil Panen Anda?
+                        Wujudkan Tanah Sehat, Petani Sejahtera
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -263,7 +279,7 @@ export default function Home() {
                         transition={{ delay: 0.2 }}
                         className="text-xl mb-10 text-green-100 max-w-2xl mx-auto"
                     >
-                        Bergabunglah dengan ribuan petani sukses yang telah merasakan manfaat KOMSAH.
+                        Bergabunglah dengan ribuan petani yang telah merasakan manfaat pupuk organik KOMSAH.
                     </motion.p>
                     <motion.div
                         initial={{ opacity: 0, scale: 0.8 }}
